@@ -5,13 +5,13 @@ use swc::{self, try_with_handler};
 use swc_common::{comments::SingleThreadedComments, errors::ColorConfig, SourceMap, GLOBALS};
 use swc_core::ecma::{transforms::base::pass::noop, visit::as_folder};
 
-use crate::extractors::{Entry, PackageConfig};
+use crate::extractors::PackageConfig;
 
 static ORIGIN: Lazy<&'static str> =
   Lazy::new(|| option_env!("ORIGIN").unwrap_or("https://unpkg.com"));
 
 pub fn rewrite_javascript_esmodule(
-  entry: &Entry,
+  code: String,
   package_config: &PackageConfig,
 ) -> anyhow::Result<String> {
   let cm = Arc::<SourceMap>::default();
@@ -31,10 +31,7 @@ pub fn rewrite_javascript_esmodule(
           //     .load_file(Path::new("turntable/examples/transform-input.js"))
           //     .expect("failed to load file");
 
-          let fm = cm.new_source_file(
-            swc_common::FileName::Anon,
-            String::from_utf8(entry.content.to_vec())?,
-          );
+          let fm = cm.new_source_file(swc_common::FileName::Anon, code);
 
           compiler.process_js_with_custom_pass(
             fm,

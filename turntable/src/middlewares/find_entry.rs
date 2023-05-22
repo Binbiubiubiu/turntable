@@ -2,7 +2,7 @@ use std::{collections::HashMap, ops::Deref, path::PathBuf};
 
 use crate::{
   errors::AppError,
-  extractors::{Entry, PackagePathname},
+  extractors::{Entry, PackagePathname, PackageQuery},
   utils::{
     encrypt::get_intergrity,
     fs::get_content_type,
@@ -86,7 +86,9 @@ pub async fn search_entries(
       path,
       entry_type: file.header().entry_type(),
       last_modified: NaiveDateTime::from_timestamp_opt(file.header().mtime()?.try_into()?, 0)
-        .expect("get last_modified"),
+        .expect("get last_modified")
+        .format("%a, %d %b %Y %H:%M:%S GMT")
+        .to_string(),
       size: file.header().size()?,
       ..Default::default()
     };
@@ -149,7 +151,7 @@ async fn read_entry_file(
   let mut content = Vec::new();
   file.read_to_end(&mut content).await?;
   entry.integrity = get_intergrity(&content)?;
-  entry.content = Bytes::from(content);
+  entry.content = content.into();
   Ok(())
 }
 
@@ -172,45 +174,54 @@ impl<E: Endpoint> Endpoint for FindEntryEndpoint<E> {
   type Output = Response;
 
   async fn call(&self, mut req: Request) -> Result<Self::Output> {
+    if PackageQuery::from_request_without_body(&req)
+      .await?
+      .meta
+      .is_some()
+    {
+      return Ok(self.ep.call(req).await?.into_response());
+    }
+
     let pkg = <&PackagePathname>::from_request_without_body(&req).await?;
 
-    let raw_query = req.uri().query();
     let stream = get_package(&pkg.package_name, &pkg.package_version).await?;
     let SearchEntry {
       found_entry: entry,
       matching_entries,
     } = search_entries(stream, &pkg.filename).await?;
 
-    if entry.is_none() {
-      return Err(AppError::NotFoundFileInPackage {
-        filename: pkg.filename.clone(),
-        package_spec: pkg.package_spec.clone(),
-      })
-      .map_err(Into::into);
-    }
+    let entry = match entry {
+      Some(entry)
+        if entry.entry_type == EntryType::Regular
+          && entry.path.to_string_lossy() != pkg.filename =>
+      {
+        return Ok(file_redirect(pkg, &entry, req.uri().query()));
+      }
+      Some(entry) if entry.entry_type == EntryType::Directory => {
+        let index_entry = matching_entries
+          .get(&format!("{}/index.js", pkg.filename))
+          .or(matching_entries.get(&format!("{}/index.json", pkg.filename)));
 
-    let entry = entry.unwrap();
-
-    if entry.entry_type == EntryType::Regular && entry.path.to_string_lossy() != pkg.filename {
-      return Ok(file_redirect(pkg, &entry, raw_query));
-    }
-
-    if entry.entry_type == EntryType::Directory {
-      let index_entry = matching_entries
-        .get(&format!("{}/index.js", pkg.filename))
-        .or(matching_entries.get(&format!("{}/index.json", pkg.filename)));
-
-      return match index_entry {
-        Some(entry) if entry.entry_type == EntryType::Regular => {
-          Ok(index_redirect(pkg, entry, raw_query))
-        }
-        _ => Err(AppError::NotFoundIndexFileInPackage {
+        return match index_entry {
+          Some(entry) if entry.entry_type == EntryType::Regular => {
+            Ok(index_redirect(pkg, entry, req.uri().query()))
+          }
+          _ => Err(AppError::NotFoundIndexFileInPackage {
+            filename: pkg.filename.clone(),
+            package_spec: pkg.package_spec.clone(),
+          })
+          .map_err(Into::into),
+        };
+      }
+      None => {
+        return Err(AppError::NotFoundFileInPackage {
           filename: pkg.filename.clone(),
           package_spec: pkg.package_spec.clone(),
         })
-        .map_err(Into::into),
-      };
-    }
+        .map_err(Into::into);
+      }
+      Some(entry) => entry,
+    };
 
     req.extensions_mut().insert(entry);
 

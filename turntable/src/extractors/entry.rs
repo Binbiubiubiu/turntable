@@ -1,7 +1,7 @@
 use std::path::PathBuf;
 
 use bytes::Bytes;
-use chrono::NaiveDateTime;
+
 use mime_guess::mime::Mime;
 use poem::{FromRequest, Request, RequestBody};
 use tokio_tar::EntryType;
@@ -12,7 +12,7 @@ pub struct Entry {
   pub entry_type: EntryType,
   pub content_type: Mime,
   pub integrity: String,
-  pub last_modified: NaiveDateTime,
+  pub last_modified: String,
   pub size: u64,
   pub content: Bytes,
 }
