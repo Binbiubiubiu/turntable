@@ -1,6 +1,6 @@
 use poem::{Endpoint, FromRequest, Middleware, Request, Result};
 
-use crate::{errors::AppError, extractors::PackagePathname};
+use crate::{errors::AppError, models::PackagePathname};
 
 #[inline]
 fn is_hash(value: impl AsRef<str>) -> bool {

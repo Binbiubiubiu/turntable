@@ -2,9 +2,9 @@
 pub(crate) mod macros;
 
 mod errors;
-mod extractors;
 mod handlers;
 mod middlewares;
+mod models;
 mod utils;
 
 use std::time::Duration;

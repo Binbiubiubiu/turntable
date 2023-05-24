@@ -2,7 +2,7 @@ use std::{collections::HashMap, ops::Deref, path::PathBuf};
 
 use crate::{
   errors::AppError,
-  extractors::{Entry, PackagePathname, PackageQuery},
+  models::{Entry, PackagePathname, PackageQuery},
   utils::{
     encrypt::get_intergrity,
     fs::get_content_type,
@@ -72,9 +72,8 @@ pub async fn search_entries(
   }
 
   let mut entries = ar.entries()?;
-  while let Some(file) = entries.next().await {
+  while let Some(Ok(mut file)) = entries.next().await {
     // Make sure there wasn't an I/O error
-    let mut file = file?;
     let mut path = file.path()?.to_path_buf();
 
     if !path.starts_with("/") {
@@ -93,7 +92,7 @@ pub async fn search_entries(
       ..Default::default()
     };
 
-    if entry.entry_type != EntryType::Regular || !entry.path.starts_with(filename) {
+    if !entry.entry_type.is_file() || !entry.path.starts_with(filename) {
       continue;
     }
 
@@ -191,19 +190,16 @@ impl<E: Endpoint> Endpoint for FindEntryEndpoint<E> {
     } = search_entries(stream, &pkg.filename).await?;
 
     let entry = match entry {
-      Some(entry)
-        if entry.entry_type == EntryType::Regular
-          && entry.path.to_string_lossy() != pkg.filename =>
-      {
+      Some(entry) if entry.entry_type.is_file() && entry.path.to_string_lossy() != pkg.filename => {
         return Ok(file_redirect(pkg, &entry, req.uri().query()));
       }
-      Some(entry) if entry.entry_type == EntryType::Directory => {
+      Some(entry) if entry.entry_type.is_dir() => {
         let index_entry = matching_entries
           .get(&format!("{}/index.js", pkg.filename))
           .or(matching_entries.get(&format!("{}/index.json", pkg.filename)));
 
         return match index_entry {
-          Some(entry) if entry.entry_type == EntryType::Regular => {
+          Some(entry) if entry.entry_type.is_file() => {
             Ok(index_redirect(pkg, entry, req.uri().query()))
           }
           _ => Err(AppError::NotFoundIndexFileInPackage {

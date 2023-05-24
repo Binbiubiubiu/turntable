@@ -1,18 +1,25 @@
 mod file;
-mod meta;
+mod meta_dir;
+mod meta_file;
 mod module;
 
 use poem::{Request, Response};
 
 use crate::{
-  extractors::PackageQuery,
-  handlers::{file::serve_file, meta::serve_directory_metadata, module::serve_module},
+  handlers::{
+    file::serve_file, meta_dir::serve_directory_metadata, meta_file::serve_file_metadata,
+    module::serve_module,
+  },
+  models::PackageQuery,
 };
 
 #[poem::handler]
 pub async fn handle_pkg_pathname(query: PackageQuery, req: &Request) -> poem::Result<Response> {
   if query.meta.is_some() {
-    return serve_directory_metadata(req).await;
+    return match req.uri().path().ends_with('/') {
+      true => serve_directory_metadata(req).await,
+      false => serve_file_metadata(req).await,
+    };
   }
 
   if query.module.is_some() {

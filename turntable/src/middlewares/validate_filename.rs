@@ -1,6 +1,6 @@
 use crate::{
   errors::AppError,
-  extractors::{PackageConfig, PackagePathname, PackageQuery},
+  models::{PackageConfig, PackagePathname, PackageQuery},
   utils::{redirect, url::create_pkg_url},
 };
 use poem::{

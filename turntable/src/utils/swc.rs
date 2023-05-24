@@ -5,7 +5,7 @@ use swc::{self, try_with_handler};
 use swc_common::{comments::SingleThreadedComments, errors::ColorConfig, SourceMap, GLOBALS};
 use swc_core::ecma::{transforms::base::pass::noop, visit::as_folder};
 
-use crate::extractors::PackageConfig;
+use crate::models::PackageConfig;
 
 static ORIGIN: Lazy<&'static str> =
   Lazy::new(|| option_env!("ORIGIN").unwrap_or("https://unpkg.com"));

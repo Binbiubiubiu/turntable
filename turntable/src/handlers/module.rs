@@ -6,7 +6,7 @@ use poem::{
 
 use crate::{
   errors::AppError,
-  extractors::{Entry, PackageConfig, PackagePathname},
+  models::{Entry, PackageConfig, PackagePathname},
   utils::{encrypt::etag, swc::rewrite_javascript_esmodule},
 };
 

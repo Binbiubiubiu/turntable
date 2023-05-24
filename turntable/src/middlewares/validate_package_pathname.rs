@@ -1,6 +1,6 @@
 use poem::{Endpoint, Middleware, Request, Result};
 
-use crate::extractors::PackagePathname;
+use crate::models::PackagePathname;
 
 pub struct ValidatePackagePathname;
 

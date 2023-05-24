@@ -5,7 +5,7 @@ use poem::{
 
 use crate::{
   errors::AppError,
-  extractors::PackagePathname,
+  models::PackagePathname,
   utils::{
     npm::{get_package_config, get_versions_and_tags, VersionsAndTags},
     redirect,

@@ -7,7 +7,7 @@ pub use base64::engine::general_purpose::STANDARD as base64;
 pub fn get_intergrity(content: impl AsRef<[u8]>) -> anyhow::Result<String> {
   let content = content.as_ref();
   let digest = sha384::hash(content);
-  Ok(base64.encode(digest.into_bytes()))
+  Ok(format!("sha384-{}", base64.encode(digest.into_bytes())))
 }
 
 #[inline]

@@ -4,7 +4,7 @@ use poem::{
 };
 
 use crate::{
-  extractors::Entry,
+  models::Entry,
   utils::{encrypt::etag, get_content_type_header},
 };
 

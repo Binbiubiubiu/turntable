@@ -26,7 +26,10 @@ async-compression = { version = "0.4", features = ["tokio", "gzip"] }
 base64 = "0.21"
 bytes = "1"
 cached = "0.43"
-chrono = { version = "0.4.23", default-features = false, features = ["clock"] }
+chrono = { version = "0.4.23", default-features = false, features = [
+  "clock",
+  "serde",
+] }
 hashes = "0.1.9"
 mime_guess = "2"
 node-semver = "2.1.0"

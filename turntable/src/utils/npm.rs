@@ -10,7 +10,7 @@ use serde::Deserialize;
 
 use urlencoding::encode;
 
-use crate::extractors::{Entry, PackageConfig};
+use crate::models::{Entry, PackageConfig};
 
 static REQUEST_CLIENT: Lazy<reqwest::Client> = Lazy::new(|| {
   reqwest::ClientBuilder::new()
