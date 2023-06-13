@@ -8,10 +8,10 @@ changelog:
 	@git commit -a -m "chore(release): $NEW_VERSION" || true
 
 release version:
-	@cargo release {{version}} -p turntable --execute
+	@cargo release {{version}} -p turntable --execute --tag-prefix=""
 
 patch:
-	@cargo release patch -p turntable --execute
+	@cargo release patch -p turntable --execute --tag-prefix=""
 
 echo version:
 	@echo {{version}}
