@@ -62,8 +62,6 @@ impl TransformVisitor {
       format!("{}?module", s.value)
     };
 
-    println!("value: {value}");
-
     *s = Str {
       span: Default::default(),
       value: value.into(),
@@ -95,8 +93,6 @@ impl VisitMut for TransformVisitor {
 
     let s = n.src.as_mut();
     self.rewrite_value(s);
-
-    println!("visit_mut_export_all");
   }
 
   fn visit_mut_named_export(&mut self, n: &mut swc_core::ecma::ast::NamedExport) {
@@ -106,11 +102,6 @@ impl VisitMut for TransformVisitor {
       let s = src.as_mut();
       self.rewrite_value(s);
     }
-
-    println!(
-      "visit_mut_named_export: {}",
-      n.src.clone().unwrap().value.to_string()
-    );
   }
 
   fn visit_mut_import_decl(&mut self, n: &mut swc_core::ecma::ast::ImportDecl) {
@@ -118,8 +109,6 @@ impl VisitMut for TransformVisitor {
 
     let s = n.src.as_mut();
     self.rewrite_value(s);
-
-    println!("visit_mut_import_decl: {}", n.src.value.to_string());
   }
 }
 

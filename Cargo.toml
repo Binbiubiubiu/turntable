@@ -1,5 +1,6 @@
 [workspace]
 members = ["turntable", "path-url-rewrite"]
+resolver = "2"
 
 [workspace.package]
 authors = ["Binbiubiubiu <2632003786.qq.com>"]
@@ -18,6 +19,8 @@ lto = true
 # opt-level = "s"
 # Optimize for performance, this is default so you don't need to specify it
 opt-level = "z"
+panic = "abort"
+strip = true
 
 [workspace.dependencies]
 swc = "0.261.15"

@@ -8,10 +8,10 @@ changelog:
 	@git commit -a -m "chore(release): $NEW_VERSION" || true
 
 release version:
-	@cargo release {{version}} --execute
+	@cargo release {{version}} --workspace --execute
 
 patch:
-	@cargo release patch --execute
+	@cargo release patch --workspace --execute
 
 echo version:
 	@echo {{version}}
