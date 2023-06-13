@@ -8,6 +8,8 @@ All notable changes to this project will be documented in this file.
 
 - Readme &nbsp;-&nbsp; by @Binbiubiubiu [<samp>(fc81a73)</samp>](https://github.com/Binbiubiubiu/git-semver-tags/commit/fc81a735721417af3e0ec1fa6598f57e96d8356e)
 
+- Changelog &nbsp;-&nbsp; by @Binbiubiubiu [<samp>(309ce62)</samp>](https://github.com/Binbiubiubiu/git-semver-tags/commit/309ce6282297fcd4a41f539508cf5afdc459a75c)
+
 
 ### &nbsp;&nbsp;&nbsp;🐞 Bug Fixes:
 
