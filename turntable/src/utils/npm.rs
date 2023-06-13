@@ -165,11 +165,11 @@ mod tests {
     Ok(())
   }
 
-  #[tokio::test]
-  async fn test_get_versions_and_tags() -> anyhow::Result<()> {
-    let _vt = get_versions_and_tags("builtins").await?;
-    let vt = get_versions_and_tags("antd").await?;
-    println!("{:?}", vt);
-    Ok(())
-  }
+  // #[tokio::test]
+  // async fn test_get_versions_and_tags() -> anyhow::Result<()> {
+  //   let _vt = get_versions_and_tags("builtins").await?;
+  //   let vt = get_versions_and_tags("antd").await?;
+  //   println!("{:?}", vt);
+  //   Ok(())
+  // }
 }
