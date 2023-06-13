@@ -11,6 +11,11 @@ All notable changes to this project will be documented in this file.
 - Changelog &nbsp;-&nbsp; by @Binbiubiubiu [<samp>(309ce62)</samp>](https://github.com/Binbiubiubiu/git-semver-tags/commit/309ce6282297fcd4a41f539508cf5afdc459a75c)
 
 
+### &nbsp;&nbsp;&nbsp;Testing:
+
+- Fix &nbsp;-&nbsp; by @Binbiubiubiu [<samp>(535b232)</samp>](https://github.com/Binbiubiubiu/git-semver-tags/commit/535b2323d07bbecb9264568a8f661045e6ac9406)
+
+
 ### &nbsp;&nbsp;&nbsp;🐞 Bug Fixes:
 
 - Meta api &nbsp;-&nbsp; by @Binbiubiubiu [<samp>(876cbe3)</samp>](https://github.com/Binbiubiubiu/git-semver-tags/commit/876cbe3a62542885901da1e2e56f6a687303df52)
