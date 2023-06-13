@@ -15,6 +15,8 @@ All notable changes to this project will be documented in this file.
 
 - Meta api &nbsp;-&nbsp; by @Binbiubiubiu [<samp>(876cbe3)</samp>](https://github.com/Binbiubiubiu/git-semver-tags/commit/876cbe3a62542885901da1e2e56f6a687303df52)
 
+- Fix cargo package error &nbsp;-&nbsp; by @Binbiubiubiu [<samp>(ea328e6)</samp>](https://github.com/Binbiubiubiu/git-semver-tags/commit/ea328e6b697a194dce63ff25f8515da9f4be006f)
+
 
 ### &nbsp;&nbsp;&nbsp;🚀 Features:
 
