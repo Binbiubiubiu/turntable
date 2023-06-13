@@ -91,7 +91,7 @@ jobs:
           strip_v: true
       - uses: taiki-e/upload-rust-binary-action@v1
         with:
-          bin: git-semver-tags
+          bin: turntable
           include: LICENSE,README.md
           archive: $bin-${{steps.tag.outputs.tag}}-$target
           target: ${{ matrix.target }}
