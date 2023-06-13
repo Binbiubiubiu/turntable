@@ -2,6 +2,8 @@
 name = "path-url-rewrite"
 version = "0.0.1"
 edition = "2021"
+description="A swc plugin for rewriting url in the path"
+license.workspace = true
 
 [lib]
 crate-type = ["cdylib","lib"]

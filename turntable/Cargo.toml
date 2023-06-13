@@ -58,7 +58,7 @@ tracing.workspace = true
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 urlencoding = "2.1"
 validate_npm_package_name = { version = "0.1", package = "validate_package_name" }
-path-url-rewrite = { path = "../path-url-rewrite" }
+path-url-rewrite = "0.0.1"
 
 [package.metadata.docs.rs]
 all-features = true
